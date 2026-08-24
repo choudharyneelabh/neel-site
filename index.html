@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #E3D9C3;
+    --bg-deep: #D6C8AA;
+    --ink: #221F1A;
+    --accent: #445C45;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html, body{
+    height:100%;
+    background: var(--bg);
+    overflow:hidden;
+  }
+
+  body{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    color: var(--ink);
+  }
+
+  /* soft radial gradient base, gives the beige some depth */
+  .field{
+    position:fixed;
+    inset:0;
+    background: radial-gradient(circle at 50% 45%, var(--bg) 0%, var(--bg-deep) 100%);
+  }
+
+  /* subtle paper grain */
+  .grain{
+    position:fixed;
+    inset:0;
+    opacity:0.5;
+    mix-blend-mode:multiply;
+    pointer-events:none;
+  }
+
+  /* cursor-driven light — the one signature move */
+  .spotlight{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background: radial-gradient(circle 420px at var(--x,50%) var(--y,40%), rgba(255,252,240,0.55), transparent 70%);
+    transition: opacity 0.4s ease;
+  }
+
+  .monogram{
+    position:fixed;
+    top:2.2rem;
+    left:2.4rem;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color: var(--ink);
+    opacity:0.55;
+  }
+
+  .stage{
+    position:relative;
+    text-align:center;
+  }
+
+  h1{
+    font-size: clamp(3.4rem, 13vw, 9rem);
+    font-weight:700;
+    line-height:0.9;
+    letter-spacing:-0.01em;
+    display:flex;
+    justify-content:center;
+  }
+
+  h1 span{
+    display:inline-block;
+    opacity:0;
+    transform: translateY(0.5em);
+    animation: rise 0.9s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+
+  h1 span:nth-child(1){ animation-delay: 0.05s; }
+  h1 span:nth-child(2){ animation-delay: 0.14s; }
+  h1 span:nth-child(3){ animation-delay: 0.23s; }
+  h1 span:nth-child(4){ animation-delay: 0.32s; }
+
+  @keyframes rise{
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  .rule{
+    width:0;
+    height:2px;
+    background: var(--accent);
+    margin: 1.1rem auto 0;
+    animation: grow 0.7s ease forwards;
+    animation-delay: 0.55s;
+  }
+
+  @keyframes grow{
+    to{ width: 3.4rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    h1 span{ opacity:1; transform:none; animation:none; }
+    .rule{ width:3.4rem; animation:none; }
+  }
+
+  .signup{
+    margin-top: 2.1rem;
+    opacity:0;
+    animation: rise 0.9s cubic-bezier(.2,.7,.2,1) forwards;
+    animation-delay: 0.7s;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .signup{ opacity:1; animation:none; }
+  }
+
+  form.email-form{
+    display:flex;
+    align-items:stretch;
+    gap:0.5rem;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  .email-form input[type="email"]{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.85rem;
+    letter-spacing:0.01em;
+    background: rgba(255,252,240,0.45);
+    border: 1px solid rgba(34,31,26,0.28);
+    border-radius: 999px;
+    padding: 0.75rem 1.15rem;
+    color: var(--ink);
+    width: 15.5rem;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .email-form input[type="email"]::placeholder{
+    color: rgba(34,31,26,0.45);
+  }
+
+  .email-form input[type="email"]:focus-visible{
+    border-color: var(--accent);
+    background: rgba(255,252,240,0.7);
+  }
+
+  .email-form button{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 999px;
+    padding: 0.75rem 1.4rem;
+    cursor:pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+  .email-form button:hover{
+    background: var(--accent);
+  }
+
+  .email-form button:active{
+    transform: scale(0.97);
+  }
+
+  .email-form button:disabled{
+    opacity:0.6;
+    cursor:default;
+  }
+
+  .email-form button:focus-visible,
+  .email-form input:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .signup-msg{
+    margin-top: 0.85rem;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    letter-spacing:0.03em;
+    min-height: 1.2em;
+    color: var(--accent);
+  }
+
+  .signup-msg.is-error{
+    color: #7A3B2E;
+  }
+</style>
+</head>
+<body>
+
+  <div class="field"></div>
+
+  <svg class="grain" width="0" height="0">
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 0.13
+                0 0 0 0 0.12
+                0 0 0 0 0.10
+                0 0 0 0.05 0"/>
+    </filter>
+  </svg>
+  <rect class="grain" width="100%" height="100%" style="position:fixed;inset:0;">
+  </rect>
+
+  <div class="spotlight" id="spotlight"></div>
+
+  <div class="monogram">N.</div>
+
+  <div class="stage">
+    <h1 aria-label="Neel">
+      <span>N</span><span>e</span><span>e</span><span>l</span>
+    </h1>
+    <div class="rule"></div>
+
+    <div class="signup">
+      <form class="email-form" id="emailForm" novalidate>
+        <label for="emailInput" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+        <input type="email" id="emailInput" name="email" placeholder="you@email.com" autocomplete="email" required>
+        <button type="submit">Notify me</button>
+      </form>
+      <div class="signup-msg" id="signupMsg" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+
+<script>
+  // apply grain filter to a full-bleed rect via CSS background trick
+  document.querySelector('.grain').outerHTML =
+    '<div class="grain" style="position:fixed;inset:0;background:transparent;filter:url(#noise);opacity:0.5;mix-blend-mode:multiply;pointer-events:none;"></div>';
+
+  const spot = document.getElementById('spotlight');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduceMotion){
+    window.addEventListener('pointermove', (e)=>{
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      spot.style.setProperty('--x', x + '%');
+      spot.style.setProperty('--y', y + '%');
+    });
+  } else {
+    spot.style.opacity = '0';
+  }
+
+  // --- email signup, backed by Kit (formerly ConvertKit) ---
+  //
+  // SETUP (2 values needed below):
+  // 1. Log into Kit -> Grow -> Landing Pages & Forms -> select or create a form.
+  // 2. Click the form -> Settings -> Incorporate / Embed -> find your Form ID
+  //    (it's also in the embed script URL, a number like 1234567).
+  // 3. Your public API key is under Kit -> Account Settings -> Developer.
+  //    This is the PUBLIC key, not the secret key -- it's safe to expose
+  //    in client-side code; that's what it's designed for.
+  const KIT_FORM_ID = 'YOUR_FORM_ID';
+  const KIT_PUBLIC_API_KEY = 'YOUR_PUBLIC_API_KEY';
+
+  const form = document.getElementById('emailForm');
+  const input = document.getElementById('emailInput');
+  const msg = document.getElementById('signupMsg');
+  const button = form.querySelector('button');
+
+  function showMsg(text, isError){
+    msg.textContent = text;
+    msg.classList.toggle('is-error', !!isError);
+  }
+
+  function isValidEmail(value){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const email = input.value.trim().toLowerCase();
+
+    if (!isValidEmail(email)){
+      showMsg('That doesn\u2019t look like a valid email.', true);
+      return;
+    }
+
+    if (KIT_FORM_ID === 'YOUR_FORM_ID' || KIT_PUBLIC_API_KEY === 'YOUR_PUBLIC_API_KEY'){
+      showMsg('Form isn\u2019t connected yet \u2014 add your Kit form ID and API key.', true);
+      return;
+    }
+
+    button.disabled = true;
+    showMsg('Adding you\u2026', false);
+
+    try{
+      const res = await fetch(`https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body: JSON.stringify({ api_key: KIT_PUBLIC_API_KEY, email })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.error){
+        throw new Error(data.error || 'Subscribe request failed');
+      }
+
+      showMsg('You\u2019re on the list.', false);
+      input.value = '';
+    } catch(err){
+      showMsg('Something went wrong \u2014 please try again.', true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
