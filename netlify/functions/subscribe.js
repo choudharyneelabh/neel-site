@@ -38,6 +38,8 @@ export default async (req) => {
   const { error } = await supabase.from('subscribers').insert({ email });
 
   if (error) {
+    console.error('Supabase insert error:', JSON.stringify(error));
+
     // Postgres code 23505 = unique constraint violation, i.e. already subscribed
     if (error.code === '23505') {
       return new Response(JSON.stringify({ message: 'Already subscribed' }), {
