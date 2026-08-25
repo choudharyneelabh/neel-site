@@ -262,18 +262,7 @@
     spot.style.opacity = '0';
   }
 
-  // --- email signup, backed by Kit (formerly ConvertKit) ---
-  //
-  // SETUP (2 values needed below):
-  // 1. Log into Kit -> Grow -> Landing Pages & Forms -> select or create a form.
-  // 2. Click the form -> Settings -> Incorporate / Embed -> find your Form ID
-  //    (it's also in the embed script URL, a number like 1234567).
-  // 3. Your public API key is under Kit -> Account Settings -> Developer.
-  //    This is the PUBLIC key, not the secret key -- it's safe to expose
-  //    in client-side code; that's what it's designed for.
-  const KIT_FORM_ID = 'YOUR_FORM_ID';
-  const KIT_PUBLIC_API_KEY = 'YOUR_PUBLIC_API_KEY';
-
+  // --- email signup, backed by your own Supabase database via a Netlify function ---
   const form = document.getElementById('emailForm');
   const input = document.getElementById('emailInput');
   const msg = document.getElementById('signupMsg');
@@ -297,28 +286,26 @@
       return;
     }
 
-    if (KIT_FORM_ID === 'YOUR_FORM_ID' || KIT_PUBLIC_API_KEY === 'YOUR_PUBLIC_API_KEY'){
-      showMsg('Form isn\u2019t connected yet \u2014 add your Kit form ID and API key.', true);
-      return;
-    }
-
     button.disabled = true;
     showMsg('Adding you\u2026', false);
 
     try{
-      const res = await fetch(`https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`, {
+      const res = await fetch('/.netlify/functions/subscribe', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json; charset=utf-8' },
-        body: JSON.stringify({ api_key: KIT_PUBLIC_API_KEY, email })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
       });
 
       const data = await res.json();
 
-      if (!res.ok || data.error){
+      if (!res.ok){
         throw new Error(data.error || 'Subscribe request failed');
       }
 
-      showMsg('You\u2019re on the list.', false);
+      showMsg(
+        data.message === 'Already subscribed' ? 'You\u2019re already on the list.' : 'You\u2019re on the list.',
+        false
+      );
       input.value = '';
     } catch(err){
       showMsg('Something went wrong \u2014 please try again.', true);
