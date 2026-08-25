@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Neel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #E3D9C3;
+    --bg-deep: #D6C8AA;
+    --ink: #221F1A;
+    --accent: #445C45;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html, body{
+    min-height:100%;
+    background: var(--bg);
+  }
+
+  body{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    color: var(--ink);
+    padding: 8rem 1.5rem 6rem;
+  }
+
+  /* soft radial gradient base, gives the beige some depth */
+  .field{
+    position:fixed;
+    inset:0;
+    background: radial-gradient(circle at 50% 45%, var(--bg) 0%, var(--bg-deep) 100%);
+  }
+
+  /* subtle paper grain */
+  .grain{
+    position:fixed;
+    inset:0;
+    opacity:0.5;
+    mix-blend-mode:multiply;
+    pointer-events:none;
+  }
+
+  .topnav{
+    position:fixed;
+    top:2.2rem;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:1.6rem;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    z-index:1;
+  }
+
+  .topnav a{
+    color: var(--ink);
+    opacity:0.55;
+    text-decoration:none;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  .topnav a:hover,
+  .topnav a:focus-visible{
+    opacity:1;
+    color: var(--accent);
+  }
+
+  .footer{
+    margin-top: 3.5rem;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color: var(--ink);
+    opacity:0.55;
+  }
+
+  .content{
+    position:relative;
+    max-width: 38rem;
+    width:100%;
+  }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color: var(--accent);
+    opacity:0.85;
+  }
+
+  h1{
+    margin-top: 0.6rem;
+    font-size: clamp(2.2rem, 7vw, 3.4rem);
+    font-weight:700;
+    line-height:1.05;
+    letter-spacing:-0.01em;
+  }
+
+  .rule{
+    width:3.4rem;
+    height:2px;
+    background: var(--accent);
+    margin: 1.4rem 0 1.8rem;
+  }
+
+  .bio p{
+    font-size: 1.05rem;
+    line-height:1.75;
+    color: rgba(34,31,26,0.85);
+  }
+
+  .bio p + p{
+    margin-top: 1.3rem;
+  }
+</style>
+</head>
+<body>
+
+  <div class="field"></div>
+
+  <svg class="grain" width="0" height="0">
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 0.13
+                0 0 0 0 0.12
+                0 0 0 0 0.10
+                0 0 0 0.05 0"/>
+    </filter>
+  </svg>
+  <rect class="grain" width="100%" height="100%" style="position:fixed;inset:0;">
+  </rect>
+
+  <nav class="topnav">
+    <a href="index.html">Home</a>
+    <a href="https://www.linkedin.com/in/neelabh-choudhary/" target="_blank" rel="noopener">Contact</a>
+  </nav>
+
+  <div class="content">
+    <div class="eyebrow">About</div>
+    <h1>Hi, I&rsquo;m Neel.</h1>
+    <div class="rule"></div>
+
+    <div class="bio">
+      <p>I&rsquo;m Neel, a data analytics professional with a background in chemical engineering and statistics. I earned my B.S. in Chemical Engineering and later completed an M.S. in Statistics, eventually building a career around using data to understand behavior, solve problems, and make better decisions. I&rsquo;ve worked across analytics, experimentation, forecasting, and predictive modeling.</p>
+
+      <p>Outside of work, the last few years have changed my perspective quite a bit. I&rsquo;ve experienced major personal loss and gone through a long period of rebuilding my own life, which has made me much more intentional about how I spend my time and what I want the next chapter to look like. These days, I&rsquo;m looking forward to continuing to apply and grow my skill set in my current work, continuing to learn, and potentially exploring teaching and other ways to share what I&rsquo;ve learned over time.</p>
+    </div>
+
+    <div class="footer">© 2026 Neel</div>
+  </div>
+
+<script>
+  document.querySelector('.grain').outerHTML =
+    '<div class="grain" style="position:fixed;inset:0;background:transparent;filter:url(#noise);opacity:0.5;mix-blend-mode:multiply;pointer-events:none;"></div>';
+</script>
+
+</body>
+</html>

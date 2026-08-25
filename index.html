@@ -57,6 +57,32 @@
     transition: opacity 0.4s ease;
   }
 
+  .topnav{
+    position:fixed;
+    top:2.2rem;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:1.6rem;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+  }
+
+  .topnav a{
+    color: var(--ink);
+    opacity:0.55;
+    text-decoration:none;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  .topnav a:hover,
+  .topnav a:focus-visible{
+    opacity:1;
+    color: var(--accent);
+  }
+
   .footer{
     position:fixed;
     bottom:2.2rem;
@@ -225,6 +251,11 @@
   </rect>
 
   <div class="spotlight" id="spotlight"></div>
+
+  <nav class="topnav">
+    <a href="about.html">About me</a>
+    <a href="https://www.linkedin.com/in/neelabh-choudhary/" target="_blank" rel="noopener">Contact</a>
+  </nav>
 
   <div class="stage">
     <h1 aria-label="Neel">
