@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — Neel</title>
+<title>Misc — Neel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -114,13 +114,13 @@
     margin: 1.4rem 0 1.8rem;
   }
 
-  .bio p{
+  .body-copy p{
     font-size: 1.05rem;
     line-height:1.75;
     color: rgba(34,31,26,0.85);
   }
 
-  .bio p + p{
+  .body-copy p + p{
     margin-top: 1.3rem;
   }
 </style>
@@ -144,19 +144,18 @@
 
   <nav class="topnav">
     <a href="index.html">Home</a>
+    <a href="about.html">About me</a>
     <a href="https://www.linkedin.com/in/neelabh-choudhary/" target="_blank" rel="noopener">Contact</a>
-    <a href="misc.html">Misc</a>
   </nav>
 
   <div class="content">
-    <div class="eyebrow">About</div>
-    <h1>Hi, I&rsquo;m Neel.</h1>
+    <div class="eyebrow">Misc</div>
+    <h1>A few other things.</h1>
     <div class="rule"></div>
 
-    <div class="bio">
-      <p>I&rsquo;m Neel, a data analytics professional with a background in chemical engineering and statistics. I earned my B.S. in Chemical Engineering and later completed an M.S. in Statistics, eventually building a career around using data to understand behavior, solve problems, and make better decisions. I&rsquo;ve worked across analytics, experimentation, forecasting, and predictive modeling.</p>
-
-      <p>Outside of work, the last few years have changed my perspective quite a bit. I&rsquo;ve experienced major personal loss and gone through a long period of rebuilding my own life, which has made me much more intentional about how I spend my time and what I want the next chapter to look like. These days, I&rsquo;m looking forward to continuing to apply and grow my skill set in my current work, continuing to learn, and potentially exploring teaching and other ways to share what I&rsquo;ve learned over time.</p>
+    <div class="body-copy">
+      <p>This page is a work in progress &mdash; more to come soon.</p>
+      <p id="subscriberCount">Loading subscriber count&hellip;</p>
     </div>
 
     <div class="footer">© 2026 Neel</div>
@@ -165,6 +164,22 @@
 <script>
   document.querySelector('.grain').outerHTML =
     '<div class="grain" style="position:fixed;inset:0;background:transparent;filter:url(#noise);opacity:0.5;mix-blend-mode:multiply;pointer-events:none;"></div>';
+
+  // subscriber count, backed by the same Supabase database via a Netlify function
+  fetch('/.netlify/functions/subscriber-count')
+    .then((res) => res.json())
+    .then((data) => {
+      if (typeof data.count === 'number') {
+        document.getElementById('subscriberCount').textContent =
+          `${data.count} people signed up so far.`;
+      } else {
+        throw new Error(data.error || 'Unexpected response');
+      }
+    })
+    .catch(() => {
+      document.getElementById('subscriberCount').textContent =
+        'Couldn’t load subscriber count.';
+    });
 </script>
 
 </body>
