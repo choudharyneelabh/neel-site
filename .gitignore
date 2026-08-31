@@ -3,3 +3,9 @@
 .netlify
 node_modules
 deno.lock
+.mcp.json
+airflow/logs/
+venv/
+supabase/.temp/
+__pycache__/
+airflow/config/airflow.cfg
